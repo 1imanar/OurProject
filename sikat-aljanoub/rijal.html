@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رجال ألمع | سكة الجنوب</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="top-buttons">
+<a href="asir.html" class="back-btn">رجوع</a>
+<button class="dark-btn" onclick="toggleDarkMode()">🌙 ليلي</button>
+</div>
+
+<header class="navbar">
+<div class="logo">
+<img src="images/logo.jpg" alt="logo">
+<span>سكة الجنوب</span>
+</div>
+</header>
+
+<section class="city-hero" style='background:url("images/asir.jpg") center center/cover no-repeat;'>
+<div class="city-overlay">
+<h1>رجال ألمع</h1>
+<p>تراث عريق وطبيعة خلابة</p>
+</div>
+</section>
+
+<section class="city-page">
+
+<h2 class="section-title">نبذة عن رجال ألمع</h2>
+<p class="province-desc">
+رجال ألمع من أشهر الوجهات التراثية في عسير، وتتميز ببيوتها الحجرية وتاريخها العريق وأجوائها الجميلة.
+</p>
+
+<h2 class="section-title">مقاهي رجال ألمع</h2>
+<div class="cards-grid">
+<div class="place-card"><img src="images/Cloud Cafe.jpg"><h3>Heritage Cafe</h3><p>كوفي بطابع تراثي جميل.</p><a href="#" class="map-btn">📍 الموقع</a></div>
+<div class="place-card"><img src="images/Mountain Brew.jpg"><h3>Almaa Coffee</h3><p>جلسات رائعة وقهوة مختصة.</p><a href="#" class="map-btn">📍 الموقع</a></div>
+<div class="place-card"><img src="images/Lavender Cafe.jpg"><h3>Village Cup</h3><p>أجواء هادئة ومريحة.</p><a href="#" class="map-btn">📍 الموقع</a></div>
+</div>
+
+<h2 class="section-title">مطاعم رجال ألمع</h2>
+<div class="cards-grid">
+<div class="place-card"><img src="images/redan.jpg"><h3>مطعم ألمع</h3><p>أطباق شعبية أصيلة.</p><a href="#" class="map-btn">📍 الموقع</a></div>
+<div class="place-card"><img src="images/jabalrest.jpg"><h3>مطعم القرية</h3><p>وجبات متنوعة بإطلالة جميلة.</p><a href="#" class="map-btn">📍 الموقع</a></div>
+<div class="place-card"><img src="images/shawa.jpg"><h3>شواية ألمع</h3><p>وجبات سريعة ومميزة.</p><a href="#" class="map-btn">📍 الموقع</a></div>
+</div>
+
+</section>
+
+<script>
+function toggleDarkMode(){
+document.body.classList.toggle("dark-mode");
+}
+</script>
+
+</body>
+</html>

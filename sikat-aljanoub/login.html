@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول | سكة الجنوب</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:'Tajawal',sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+      url("images/hero.jpg") center/cover no-repeat;
+      padding:20px;
+    }
+
+    .login-box{
+      width:100%;
+      max-width:420px;
+      background:rgba(255,255,255,0.96);
+      padding:30px;
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.2);
+      text-align:center;
+    }
+
+    .login-box h2{
+      color:#2f5d50;
+      margin-bottom:10px;
+      font-size:32px;
+    }
+
+    .login-box p{
+      color:#666;
+      margin-bottom:20px;
+      font-size:16px;
+    }
+
+    .input-group{
+      margin-bottom:15px;
+      text-align:right;
+    }
+
+    .input-group label{
+      display:block;
+      margin-bottom:8px;
+      color:#333;
+      font-weight:700;
+    }
+
+    .input-group input{
+      width:100%;
+      padding:12px;
+      border:1px solid #ccc;
+      border-radius:12px;
+      font-size:15px;
+      outline:none;
+    }
+
+    .input-group input:focus{
+      border-color:#2f5d50;
+    }
+
+    .login-btn,
+    .guest-btn{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:12px;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:10px;
+      transition:0.3s;
+    }
+
+    .login-btn{
+      background:#2f5d50;
+      color:white;
+    }
+
+    .login-btn:hover{
+      background:#24483e;
+    }
+
+    .guest-btn{
+      background:#e8f1ed;
+      color:#2f5d50;
+    }
+
+    .guest-btn:hover{
+      background:#d7e7e0;
+    }
+
+    .back-link{
+      display:inline-block;
+      margin-top:18px;
+      color:#2f5d50;
+      text-decoration:none;
+      font-weight:bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>تسجيل الدخول</h2>
+    <p>أهلًا بك في سكة الجنوب</p>
+
+    <div class="input-group">
+      <label for="username">اسم المستخدم</label>
+      <input type="text" id="username" placeholder="أدخل اسمك">
+    </div>
+
+    <div class="input-group">
+      <label for="password">كلمة المرور</label>
+      <input type="password" id="password" placeholder="أدخل كلمة المرور">
+    </div>
+
+    <button class="login-btn" onclick="loginUser()">الدخول كمستخدم</button>
+    <button class="guest-btn" onclick="loginGuest()">الدخول كضيف</button>
+
+    <a href="index.html" class="back-link">الرجوع للرئيسية</a>
+  </div>
+
+  <script>
+    function loginUser(){
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if(username === "" || password === ""){
+        alert("فضلاً أدخل اسم المستخدم وكلمة المرور");
+        return;
+      }
+
+      localStorage.setItem("userType", "user");
+      localStorage.setItem("username", username);
+      window.location.href = "index.html";
+    }
+
+    function loginGuest(){
+      localStorage.setItem("userType", "guest");
+      localStorage.setItem("username", "ضيف");
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>

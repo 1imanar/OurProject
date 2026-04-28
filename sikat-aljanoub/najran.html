@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نجران | سكة الجنوب</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="top-buttons">
+<a href="index.html" class="back-btn">رجوع</a>
+<button class="dark-btn" onclick="toggleDarkMode()">🌙 ليلي</button>
+</div>
+
+<header class="navbar">
+<div class="logo">
+<img src="images/logo.jpg" alt="logo">
+<span>سكة الجنوب</span>
+</div>
+</header>
+
+<section class="city-hero" style='background:url("images/najran.jpg") center center/cover no-repeat;'>
+<div class="city-overlay">
+<h1>نجران</h1>
+<p>تاريخ عريق وطبيعة صحراوية ساحرة</p>
+</div>
+</section>
+
+<section class="intro-section">
+<h2 class="section-heading">استكشف نجران</h2>
+<p class="intro-text">
+نجران من أبرز مناطق الجنوب، وتتميز بالتراث التاريخي والأسواق الشعبية والطبيعة الصحراوية والجبال الجميلة.
+</p>
+</section>
+
+<section class="provinces-section">
+<h2 class="section-title">محافظات نجران</h2>
+<p class="province-desc">اختر المحافظة التي ترغب باستكشافها</p>
+
+<div class="provinces-grid">
+
+<a href="sharurah.html" class="info-card">
+<h3>شرورة</h3>
+<p>مدينة حيوية وأسواق ومطاعم متنوعة.</p>
+</a>
+
+<a href="hubuna.html" class="info-card">
+<h3>حبونا</h3>
+<p>طبيعة جميلة وأجواء هادئة.</p>
+</a>
+
+<a href="najran-city.html" class="info-card">
+<h3>مدينة نجران</h3>
+<p>أشهر المعالم والأسواق التاريخية.</p>
+</a>
+
+</div>
+</section>
+
+<script>
+function toggleDarkMode(){
+document.body.classList.toggle("dark-mode");
+}
+</script>
+
+</body>
+</html>
