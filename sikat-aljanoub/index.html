@@ -30,7 +30,6 @@
         <li><a href="#" class="active">الرئيسية</a></li>
         <li><a href="#regions">مناطقنا</a></li>
         <li><a href="#about">من نحن</a></li>
-        <li><a href="#contact">الاتصال</a></li>
         <li><a href="login.html">تسجيل الدخول</a></li>
       </ul>
     </nav>
@@ -83,7 +82,6 @@
     <div class="small-line"></div>
 
     <div class="regions-grid">
-
       <a href="baha.html" class="region-card">
         <img src="images/baha.jpg" alt="الباحة">
         <div class="icon">🏰</div>
@@ -107,17 +105,19 @@
         <div class="icon">🌴</div>
         <h3>نجران</h3>
       </a>
-
     </div>
   </section>
 
-  <section class="contact" id="contact">
-    <h2>الاتصال</h2>
-    <p>سكة الجنوب - منصة سياحية لاستكشاف جنوب المملكة العربية السعودية</p>
-  </section>
+  <div class="chat-icon" onclick="toggleAssistant()">💬</div>
+
+  <div class="assistant-popup" id="assistantBox">
+    <h3>عوضه - المرشد السياحي</h3>
+    <input type="text" id="userQuestion" placeholder="اسألني عن الجنوب...">
+<button id="sendBtn">إرسال</button>    <div id="assistantReply"></div>
+  </div>
 
   <script>
-    function toggleDarkMode(){
+    function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
     }
 
@@ -125,13 +125,46 @@
     const userType = localStorage.getItem("userType");
     const welcomeBox = document.getElementById("welcomeBox");
 
-    if(username){
-      if(userType === "guest"){
+    if (username) {
+      if (userType === "guest") {
         welcomeBox.innerHTML = "مرحبًا، ضيف 👤";
-      }else{
+      } else {
         welcomeBox.innerHTML = "مرحبًا، " + username + " 👤";
       }
     }
+
+    function toggleAssistant() {
+      const box = document.getElementById("assistantBox");
+      box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    async function askAssistant() {
+      const question = document.getElementById("userQuestion").value.trim();
+      const reply = document.getElementById("assistantReply");
+
+      if (question === "") {
+        reply.innerHTML = "اكتب سؤالك أولًا 🌿";
+        return;
+      }
+
+      reply.innerHTML = "جاري التفكير...";
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: question })
+        });
+
+        const data = await response.json();
+        reply.innerHTML = data.reply;
+      } catch (error) {
+        reply.innerHTML = "تعذر الاتصال بالمساعد. تأكدي أن app.py شغال.";
+      }
+    }
+    document.getElementById("sendBtn").addEventListener("click", askAssistant);
   </script>
 
 </body>

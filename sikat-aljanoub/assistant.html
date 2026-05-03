@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>ياهلا وغلا..معك عوضه دليلك بالجنوب </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="assistant-page">
+    <h1>ياهلا وغلا..معك عوضه دليلك بالجنوب </h1>
+    <p>امر اسأل عن الي ودك.</p>
+
+    <input type="text" id="userQuestion" placeholder="امرني ...">
+    <button onclick="askAssistant()">إرسال</button>
+
+    <div id="assistantReply"></div>
+
+    <a href="index.html" class="back-link">رجوع للرئيسية</a>
+  </div>
+
+<script>
+async function askAssistant() {
+  const question = document.getElementById("userQuestion").value;
+  const reply = document.getElementById("assistantReply");
+
+  reply.innerHTML = "جاري البحث...";
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: question })
+    });
+
+    const data = await response.json();
+    reply.innerHTML = data.reply;
+
+  } catch (error) {
+    reply.innerHTML = "تعذر الاتصال بالسيرفر";
+    console.log(error);
+  }
+}
+</script></body>
+</html>

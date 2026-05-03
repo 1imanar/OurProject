@@ -1,26 +1,28 @@
-function askAssistant() {
-    let input = document.getElementById("userQuestion").value.toLowerCase();
-    let reply = document.getElementById("assistantReply");
+async function askAssistant() {
+  const question = document.getElementById("userQuestion").value.trim();
+  const reply = document.getElementById("assistantReply");
 
-    if (input.includes("ابها")) {
-        reply.innerHTML = "أفضل الأماكن في أبها: السودة، حديقة أبو خيال، قرية المفتاحة.";
-    }
-    else if (input.includes("الباحة")) {
-        reply.innerHTML = "في الباحة: منتزه رغدان، غابة خيرة، قرية ذي عين.";
-    }
-    else if (input.includes("جازان")) {
-        reply.innerHTML = "في جازان: الكورنيش، جزيرة فرسان، جبال فيفا.";
-    }
-    else if (input.includes("نجران")) {
-        reply.innerHTML = "في نجران: الأخدود، قصر الإمارة، حبونا.";
-    }
-    else if (input.includes("كوفي")) {
-        reply.innerHTML = "يوجد العديد من المقاهي الجميلة في جميع المناطق.";
-    }
-    else if (input.includes("مطعم")) {
-        reply.innerHTML = "يوجد مطاعم مميزة في كل منطقة حسب اختيارك.";
-    }
-    else {
-        reply.innerHTML = "عذرًا، حاول كتابة اسم منطقة مثل أبها أو الباحة.";
-    }
+  if (question === "") {
+    reply.innerHTML = "اكتب سؤالك أولًا 🌿";
+    return;
+  }
+
+  reply.innerHTML = "جاري التفكير...";
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: question })
+    });
+
+    const data = await response.json();
+    reply.innerHTML = data.reply;
+
+  } catch (error) {
+    reply.innerHTML = "تعذر الاتصال بالمساعد.";
+    console.log(error);
+  }
 }

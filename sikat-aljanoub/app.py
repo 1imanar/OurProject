@@ -1,82 +1,71 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from google import genai
-import os
-import time
+import oracledb
 
 app = Flask(__name__)
 CORS(app)
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-
-
-def ask_gemini_with_retry(prompt, retries=3, delay=3):
-    last_error = None
-
-    for attempt in range(retries):
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt
-            )
-            return response
-
-        except Exception as e:
-            last_error = e
-
-            error_text = str(e)
-
-            # إذا كان الخطأ مؤقت مثل 503، يعيد المحاولة
-            if "503" in error_text or "UNAVAILABLE" in error_text:
-                if attempt < retries - 1:
-                    time.sleep(delay)
-                    continue
-
-            # أي خطأ ثاني يوقف مباشرة
-            raise e
-
-    raise last_error
-
+dsn = "db.freesql.com:1521/23ai_mb9q7"
+DB_USER = "SQL_IVNYV40WHRFD2EJHK5UGR3EYK0"
+DB_PASSWORD = "4N7A2#28R2Ui0HJXOQXMZJXMVF4L94"
 
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
         data = request.get_json()
-        user_message = data.get("message", "").strip()
+        question = data.get("message", "").strip().lower()
 
-        if not user_message:
-            return jsonify({"reply": "اكتبي سؤالك أول."}), 400
+        connection = oracledb.connect(
+            user=DB_USER,
+            password=DB_PASSWORD,
+            dsn=dsn
+        )
 
-        system_prompt = """
-أنت مرشد سياحي ذكي لموقع اسمه سكة الجنوب.
-مهمتك تساعد المستخدم في السياحة في جنوب السعودية.
-ركز على:
-- عسير
-- جازان
-- نجران
-- الباحة
+        cursor = connection.cursor()
 
-خلك واضح ومرتب وبالعربي.
+        cursor.execute("""
+            SELECT PLACE_NAME, DESCRIPTION
+            FROM PLACES
+            WHERE LOWER(PLACE_NAME) LIKE :q
+               OR LOWER(DESCRIPTION) LIKE :q
+            FETCH FIRST 5 ROWS ONLY
+        """, q=f"%{question}%")
+
+        rows = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        if rows:
+            reply = "وجدت لك هذه الأماكن:\n\n"
+
+            for row in rows:
+                try:
+                    desc = str(row[1]) if row[1] else ""
+                except:
+                    desc = ""
+
+                reply += f"• {row[0]} - {desc}\n"
+
+        else:
+            reply = """لم أجد نتيجة مطابقة 🌿
+
+جرّب البحث عن:
+• أبها
+• جازان
+• نجران
+• الباحة
+• منتزه
+• مطعم
+• كافيه
 """
 
-        full_prompt = f"{system_prompt}\n\nسؤال المستخدم: {user_message}"
+        return jsonify({"reply": reply})
 
-        response = ask_gemini_with_retry(full_prompt)
-
-        return jsonify({"reply": response.text})
-
-    except Exception as e:
-        error_text = str(e)
-
-        if "503" in error_text or "UNAVAILABLE" in error_text:
-            return jsonify({
-                "reply": "الخدمة عليها ضغط الآن، جربي بعد شوي."
-            }), 500
-
+    except Exception:
         return jsonify({
-            "reply": f"صار خطأ: {error_text}"
-        }), 500
-
+            "reply": "حصلت مشكلة بسيطة 🌿 جرّب مرة ثانية أو ابحث باسم منطقة مثل أبها أو جازان."
+        })
 
 if __name__ == "__main__":
     app.run(debug=True)
